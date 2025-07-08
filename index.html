@@ -208,23 +208,26 @@
             renderStack('pop', value);
         }
 
-        function peek() {
-            if (stack.length === 0) {
-                updateStatus('ข้อผิดพลาด', 'Stack ว่างเปล่า', 'red');
-                return;
-            }
-            const topItem = stack[stack.length - 1];
-            updateStatus('ข้อมูล', `ข้อมูลบนสุดคือ '${topItem}'`, 'indigo');
-            
-            const topElement = Array.from(stackContainer.children).find(child => !child.classList.contains('item-popped'));
-            if (topElement) {
-                topElement.style.setProperty('--peek-color', topElement.style.backgroundColor);
-                topElement.classList.add('item-peeked');
-                setTimeout(() => {
-                    topElement.classList.remove('item-peeked');
-                }, 800);
-            }
-        }
+      function peek() {
+    if (stack.length === 0) {
+        updateStatus('ข้อผิดพลาด', 'Stack ว่างเปล่า', 'red');
+        return;
+    }
+    const topItem = stack[stack.length - 1];
+    updateStatus('ข้อมูล', `ข้อมูลบนสุดคือ '${topItem}'`, 'indigo');
+
+    const stackItems = Array.from(stackContainer.children).filter(child => !child.classList.contains('item-popped'));
+    const topElement = stackItems.at(-1); // <- ใช้ .at(-1) เพื่อเลือกตัวสุดท้าย
+
+    if (topElement) {
+        topElement.style.setProperty('--peek-color', topElement.style.backgroundColor);
+        topElement.classList.add('item-peeked');
+        setTimeout(() => {
+            topElement.classList.remove('item-peeked');
+        }, 800);
+    }
+}
+
 
         function reset() {
             stack = [];
